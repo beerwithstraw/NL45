@@ -1,0 +1,43 @@
+# ============================================================
+# NL-45 Extraction Pipeline Configuration
+# ============================================================
+
+base_path: "/Users/pulkit/Desktop/Forms"
+
+fiscal_years:
+  - FY2026
+
+quarters: all
+
+master_sheet_path: "/Users/pulkit/Desktop/Forms/NL45_Master.xlsx"
+processed_log_path: "/Users/pulkit/Desktop/Forms/.NL45_processed_log.json"
+
+consolidated_mode: dynamic
+
+# These keywords must appear on the actual NL-45 data page.
+# min_matches=3 is safe: TOC pages only ever have 2 matches (NL-45 + GRIEVANCE DISPOSAL).
+# Variants cover different company styles: NL45 vs NL-45, S.No vs Sl No.
+nl45_keywords:
+  - "NL-45"
+  - "NL45"
+  - "GRIEVANCE DISPOSAL"
+  - "Opening Balance"
+  - "Sl No."
+  - "S.No"
+  - "Proposal Related"   # row label (a) in every NL-45 table — never on TOC pages
+  - "GREIVANCE"          # misspelling used by some companies in their form title
+
+# TOC pages in most consolidated PDFs score exactly 3 (NL-45 + GRIEVANCE DISPOSAL + S.No
+# from the form index). With "Proposal Related" added, actual NL-45 data pages score ≥4.
+# min_matches=4 therefore skips TOC pages for all companies except the two below.
+nl45_keyword_min_matches: 4
+
+# Per-company overrides (optional).
+# Use start/end (1-indexed) only when keyword detection is fundamentally impossible
+# (e.g. corrupt PDF fonts that crash pdfplumber before reaching the target page).
+# Use min_matches alone when the data page scores 3 but not 4 due to sparse text layout.
+nl45_page_overrides:
+  aditya_birla_health:
+    min_matches: 3   # 11-col layout — only NL-45 + GRIEVANCE DISPOSAL + Proposal Related visible
+  care_health:
+    min_matches: 3   # sparse header layout — NL-45 + GREIVANCE + Proposal Related = 3
