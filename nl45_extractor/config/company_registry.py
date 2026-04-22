@@ -1,6 +1,8 @@
 """Company Registry for NL-45 (Grievance Disposal)."""
 
 COMPANY_MAP = {
+    "care": "care_health",
+    "star": "star_health",
     "bajaj allianz": "bajaj_allianz",
     "bajaj": "bajaj_allianz",
     "bajajgeneral": "bajaj_allianz",
