@@ -37,7 +37,9 @@ nl45_keyword_min_matches: 4
 # (e.g. corrupt PDF fonts that crash pdfplumber before reaching the target page).
 # Use min_matches alone when the data page scores 3 but not 4 due to sparse text layout.
 nl45_page_overrides:
-  aditya_birla_health:
-    min_matches: 3   # 11-col layout — only NL-45 + GRIEVANCE DISPOSAL + Proposal Related visible
-  care_health:
-    min_matches: 3   # sparse header layout — NL-45 + GREIVANCE + Proposal Related = 3
+  ADITYA_BIRLA:
+    start: 48
+    end: 48
+  CARE_HEALTH:
+    start: 48
+    end: 48
