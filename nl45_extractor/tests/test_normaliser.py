@@ -1,4 +1,4 @@
-"""Tests for extractor/normaliser.py (copied unchanged from NL44)."""
+"""Tests for extractor/normaliser.py (copied unchanged from NL45)."""
 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
