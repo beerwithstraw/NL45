@@ -65,7 +65,7 @@ def parse_pdf(pdf_path: str, company_key: str, quarter: str = "", year: str = ""
                     logger.debug(f"Page {pg_idx}: found standalone benchmark table ({len(benchmark_tbl)} rows)")
                     extract.benchmark_data = extract_benchmark_table(benchmark_tbl)
 
-                if extract.status_data is not None:
+                if extract.status_data is not None and extract.status_data.data:
                     break  # NL-45 is a single-page form
 
     except Exception as e:

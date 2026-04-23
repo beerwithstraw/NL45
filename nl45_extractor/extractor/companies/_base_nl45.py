@@ -27,6 +27,7 @@ Benchmark row location — two variants:
 """
 
 import logging
+import re
 from typing import List, Optional, Tuple
 
 from config.settings import BENCHMARK_ROW_MAP, BENCHMARK_VALUE_COL, get_status_column_indices
@@ -46,12 +47,14 @@ def is_status_table(table: List[list]) -> bool:
     if ncols < 9:
         return False
     # Header rows must contain known NL-45 keywords
-    flat = " ".join(str(c or "") for row in table[:3] for c in row).upper()
-    return (
-        "GRIEVANCE DISPOSAL" in flat
-        or "OPENING BALANCE" in flat
-        or "PARTICULARS" in flat
-    )
+    # Scan first 10 rows as some companies have large header blocks (e.g. Raheja QBE)
+    flat = " ".join(str(c or "") for row in table[:10] for c in row).upper()
+    
+    # Check for keywords, including common typo variants
+    has_form_title = re.search(r"GR[IE]{2}VANCE\s+DISPOSAL", flat)
+    has_header_labels = "OPENING BALANCE" in flat or "PARTICULARS" in flat
+    
+    return bool(has_form_title or has_header_labels)
 
 
 def is_benchmark_table(table: List[list]) -> bool:
@@ -122,6 +125,10 @@ def extract_status_table(table: List[list]) -> Tuple[NL45StatusData, Optional[NL
         # Use only the first line of the cell — "Others" rows often contain multi-line
         # sub-item descriptions like "(i) Claim related" that would match wrong types.
         raw_label = str(row[1] or "").split('\n')[0].strip()
+        
+        # Strip common sub-item prefixes like "a) ", "(i) ", "i) " to help matching
+        raw_label = re.sub(r'^[a-z0-9\(\)]+[\)\.]\s*', '', raw_label, flags=re.IGNORECASE).strip()
+        
         if not raw_label:
             continue
 

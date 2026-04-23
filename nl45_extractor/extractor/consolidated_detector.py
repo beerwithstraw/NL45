@@ -17,11 +17,16 @@ from typing import Optional, Tuple, List
 logger = logging.getLogger(__name__)
 
 DEFAULT_KEYWORDS = [
+    "NL-45",
     "GRIEVANCE DISPOSAL",
-    "Opening Balance",       # appears in data table header — NOT in TOC pages
-    "Sl No.",                # appears in data table header — NOT in TOC pages
+    "GREIVANCE DISPOSAL",     # handles common typo
+    "Opening Balance",
+    "Opening Complaints",     # Aditya Birla variant
+    "Sl No.",
+    "SI No",                  # Care Health variant
+    "Duration wise Pending Status",
 ]
-DEFAULT_MIN_MATCHES = 2
+DEFAULT_MIN_MATCHES = 1
 
 FORM_HEADER_PATTERN = re.compile(
     r"^\s*(?:FORM\s+)?NL[-\s]?(\d+)|\bFORM\s+NL[-\s]?(\d+)", 

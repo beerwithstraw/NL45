@@ -153,4 +153,5 @@ COMPANY_DISPLAY_NAMES = {
 DEDICATED_PARSER: dict = {
     "new_india":           "parse_new_india",
     "aditya_birla_health": "parse_aditya_birla",
+    "icici_lombard":       "parse_icici_lombard",
 }
